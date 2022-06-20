@@ -7,22 +7,20 @@
      
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename='.basename($file));
-            header('Content-Transfer-Encoding: binary');
+            header('HTTP/1.1 200 Ok');
+            header('Content-Encoding: identity');
+            header("Content-type: application/pdf");
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
             header('Expires: 0');
-            header('Cache-Control: private');
-            header('Pragma: private');
+            header('Cache-Control: must-revalidate');
             header('Content-Length: ' . filesize($file));
-            ob_clean();
-            flush();
             readfile($file);
-            
             exit;
         } 
         else {
-            $_SESSION['pesan'] = "Oops! File - $filename - not found ...";
-            header("location:index.php");
+           header('HTTP/1.1 404 Not found');
+           echo ("file $file not found");
+           exit;
         }
     }
 ?>
